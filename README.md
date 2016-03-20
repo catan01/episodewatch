@@ -1,5 +1,5 @@
 # episodewatch
-Logs your TV show viewing progress
+Java program to log your TV show viewing progress
 
 All information is received from http://thetvdb.com
 
