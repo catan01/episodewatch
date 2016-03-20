@@ -85,15 +85,8 @@ public class Series extends Observable {
 	public boolean equals(Object series) {
 		if(series == this) {
 			return true;
-		} else {
-			if(series instanceof Series) {
-				if(((Series) series).getId() == this.getId()) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-			return false;
 		}
+		return (series instanceof Series) &&
+		       (((Series) series).getId() == this.getId());
 	}
 }

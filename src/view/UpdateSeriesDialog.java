@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.BorderLayout;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -130,7 +131,7 @@ public class UpdateSeriesDialog extends JDialog {
 					progressArea.setText(progressText);
 				} catch (IOException | XMLStreamException
 						| FactoryConfigurationError e) {
-					progressText += "<font color=#990000>Failed updating " + series.getTitle() + ". (" + e.getMessage() + ")</font><br/>";
+					progressText += "<font color=#990000>Failed updating " + series.getTitle() + ". (" + e.toString() + ")</font><br/>";
 					progressArea.setText(progressText);
 				}
 			}

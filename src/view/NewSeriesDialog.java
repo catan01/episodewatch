@@ -49,9 +49,9 @@ public class NewSeriesDialog extends JDialog {
 	private static int SCROLLSPEED = 10;
 	public static int BANNER_HEIGHT = 70;
 	public static int BANNER_WIDTH = 379;
-	
+
 	private SeriesManager manager;
-	
+
 	private JPanel searchPnl;
 	private JLabel searchLbl;
 	private JTextField searchTxt;
@@ -61,17 +61,17 @@ public class NewSeriesDialog extends JDialog {
 	private JProgressBar loadBar;
 	private JButton addBtn;
 	private JButton cancelBtn;
-	
+
 	private ImageLoader imgLoader;
-	
-	
+
+
 	public NewSeriesDialog(SeriesManager manager) {
 		super(manager.getFrame());
 		this.manager = manager;
-		
+
 		//center
 		setLocation(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().x - (WINDOW_WIDTH / 2), GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().y - (WINDOW_HEIGHT / 2));
-		
+
 		setModal(true);
 		setResizable(false);
 		setTitle("Add a series");
@@ -83,7 +83,7 @@ public class NewSeriesDialog extends JDialog {
 				close();
 			}
 		});
-		
+
 		searchPnl = new JPanel();
 		searchPnl.setLayout(new BoxLayout(searchPnl, BoxLayout.X_AXIS));
 		searchLbl = new JLabel("Name: ");
@@ -96,11 +96,11 @@ public class NewSeriesDialog extends JDialog {
 		loadBar = new JProgressBar();
 		addBtn = new JButton("Add");
 		cancelBtn = new JButton("Cancel");
-		
+
 		resultTbl.setTableHeader(null);
 		resultTbl.setBorder(BorderFactory.createEmptyBorder());
 		resultTbl.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-		
+
 		//render the cell depending on the object it receives
 		DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
 			/**
@@ -122,7 +122,7 @@ public class NewSeriesDialog extends JDialog {
 					super.setValue(value);
 				}
 			}
-			
+
 			//remove focus border
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 				return super.getTableCellRendererComponent(table, value, isSelected, false, row, column);
@@ -144,7 +144,7 @@ public class NewSeriesDialog extends JDialog {
 		buttonPnl.add(addBtn);
 		buttonPnl.add(cancelBtn);
 		add(buttonPnl, BorderLayout.SOUTH);
-		
+
 		searchTxt.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -153,44 +153,44 @@ public class NewSeriesDialog extends JDialog {
 					search();
 				}
 			}
-			
+
 		});
-		
+
 		searchBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				search();
 			}
-			
+
 		});
-		
+
 		addBtn.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				close();
 				add();
 			}
 		});
-		
+
 		cancelBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				close();
 			}
-			
+
 		});
 	}
-	
+
 	private void close() {
 		setVisible(false);
 		if(imgLoader != null) {
 			imgLoader.cancel(true);
 		}
 	}
-	
+
 	private void search() {
 		if(imgLoader != null) {
 			imgLoader.cancel(true);
@@ -198,11 +198,11 @@ public class NewSeriesDialog extends JDialog {
 		searchSeries(searchTxt.getText());
 		searchTxt.setText("");
 	}
-	
+
 	private void error(Throwable e) {
-		JOptionPane.showMessageDialog(this, "Something's wrong:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Something's wrong:\n" + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 	}
-	
+
 	private void add() {
 		int id = ((SeriesModel)resultTbl.getModel()).getIdAt(resultTbl.getSelectedRow());
 		try {
@@ -211,7 +211,7 @@ public class NewSeriesDialog extends JDialog {
 			error(e);
 		}
 	}
-	
+
 	private void searchSeries(String name) {
 		Series[] newSeries;
 		loadBar.setValue(0);
@@ -235,14 +235,14 @@ class ImageLoader extends SwingWorker<Void, Object> {
 	private TableModel tableModel;
 	private JProgressBar loadBar;
 	private int index;
-	
+
 	ImageLoader(Series[] series, TableModel tableModel, JProgressBar loadBar) {
 		this.series = series;
 		this.tableModel = tableModel;
 		this.loadBar = loadBar;
 		this.index = 0;
 	}
-	
+
 	@Override
 	protected Void doInBackground() throws Exception {
 		for(Series s : series) {
@@ -267,7 +267,7 @@ class ImageLoader extends SwingWorker<Void, Object> {
 	protected void process(final List<Object> chunks) {
 		for (Object icon : chunks) {
 			tableModel.setValueAt(icon, index++, 1);
-		 }
+		}
 	}
 }
 
@@ -279,11 +279,11 @@ class SeriesModel extends AbstractTableModel {
 	private static final long serialVersionUID = 1L;
 	Object[][] data;
 	int[] ids;
-	
+
 	SeriesModel() {
 		data = null;
 	}
-	
+
 	SeriesModel(Series[] series) {
 		data = new Object[series.length][2];
 		ids = new int[series.length];
@@ -293,7 +293,7 @@ class SeriesModel extends AbstractTableModel {
 			ids[i] = series[i].getId();
 		}
 	}
-	
+
 	@Override
 	public int getRowCount() {
 		if(data != null) {
@@ -311,14 +311,14 @@ class SeriesModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return data[rowIndex][columnIndex];
 	}
-	
+
 	public int getIdAt(int rowIndex) {
 		return ids[rowIndex];
 	}
-	
+
 	public void setValueAt(Object value, int row, int col) {
-        data[row][col] = value;
-        fireTableCellUpdated(row, col);
-    }
-	
+		data[row][col] = value;
+		fireTableCellUpdated(row, col);
+	}
+
 }

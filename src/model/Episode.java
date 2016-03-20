@@ -3,18 +3,18 @@ package model;
 import java.util.Observable;
 
 public class Episode extends Observable {
-	
+
 	private int id;
 	private int season;
 	private int number;
 	private String title;
 	private String date;
 	private boolean watched;
-	
+
 	@SuppressWarnings("unused")
 	private Episode() {
 	}
-	
+
 	public Episode(int id, int season, int number, String title, String date) {
 		this.id = id;
 		this.season = season;
@@ -23,7 +23,7 @@ public class Episode extends Observable {
 		this.date = date;
 		this.setWatched(false);
 	}
-	
+
 	public Episode(int id, int season, int number, String title, String date, boolean watched) {
 		this.id = id;
 		this.season = season;
@@ -60,7 +60,7 @@ public class Episode extends Observable {
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -79,7 +79,7 @@ public class Episode extends Observable {
 
 	public void setWatched(boolean watched) {
 		this.watched = watched;
-		
+
 		notifyObservers();
 	}
 
@@ -88,20 +88,13 @@ public class Episode extends Observable {
 		this.setChanged();
 		super.notifyObservers();
 	}
-	
+
 	@Override
 	public boolean equals(Object episode) {
 		if(episode == this) {
 			return true;
-		} else {
-			if(episode instanceof Episode) {
-				if(((Episode) episode).getId() == this.getId()) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-			return false;
 		}
+		return (episode instanceof Episode) &&
+		       (((Episode) episode).getId() == this.getId());	
 	}
 }

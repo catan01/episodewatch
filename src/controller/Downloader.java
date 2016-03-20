@@ -113,6 +113,9 @@ public class Downloader {
 	}
 
 	public Series getSeries(int id) throws IOException, XMLStreamException, FactoryConfigurationError {
+		if(apikey == null || apikey.equals("")) {
+			throw new IOException("Missing API key");
+		}
 		ZipFile zipFile = new ZipFile(download(APIURL + apikey + SERIESURL + id + SERIESALL));
 		Series series = XMLParser.getParser().parseSeries(zipFile.getInputStream(zipFile.getEntry("en.xml")));
 		zipFile.close();

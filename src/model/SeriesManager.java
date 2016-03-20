@@ -7,7 +7,6 @@ import javax.xml.bind.JAXBException;
 
 import controller.Downloader;
 import controller.XMLEncoder;
-
 import view.EWFrame;
 
 
@@ -53,12 +52,18 @@ public class SeriesManager extends Observable {
 	}
 	
 	public void exchangeSeries(Series s1, Series s2) {
-		if(s1 == s2) {
-			return;
-		}
+		if(s1 == s2) return;
 		int oldIndexS2 = series.indexOf(s2);
 		series.set(series.indexOf(s1), s2);
 		series.set(oldIndexS2, s1);
+		notifyObservers();
+	}
+	
+	public void shiftSeries(Series from, Series to) {
+		if(from == to) return;
+		int indexTo = series.indexOf(to);
+		series.remove(from);
+		series.add(indexTo, from);
 		notifyObservers();
 	}
 	

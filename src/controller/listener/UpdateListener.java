@@ -15,9 +15,7 @@ public class UpdateListener  implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new UpdateSeriesDialog(manager);
+		if(!manager.getSeries().isEmpty())
+			new UpdateSeriesDialog(manager);
 	}
-	
-	
-
 }
